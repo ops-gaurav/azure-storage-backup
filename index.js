@@ -1,6 +1,6 @@
 var AzureStorage = require('azure-storage');
 
-let exports = module.exports = {};
+var exports = module.exports = {};
 
 /**
  * @desc trigger the Blob Storage back up AZURE API
