@@ -38,9 +38,7 @@ exports.triggerBackupBlobStorage = config => {
 									targetBlobService.startCopyBlob (blobURI, config.target.container, 'backup_'+ val.Name, (err, blob, response) => {
 										if (err){  
 											reject (err);
-										} else {
-											
-										}
+										} 
 									});
 
 									if (i == blobs.length-1)

@@ -18,5 +18,5 @@
     "azure-storage": "^2.2.1",
     "babel-polyfill": "^6.23.0",
     "winston": "^2.3.1"
-  }
+  } 
 }
