@@ -1,6 +1,74 @@
 # azure-copy-blob
 
+azure-copy-blob is an npm module to generate the azure storage backups. Primarily this is designed to do BLOB storage backups. In order to use this plugin, you need to have an Azure account. You need to create a storage account  and need to have the access keys for the same. 
+
+## Usage
+1. Install using the following command<br/>
+`npm install --save azure-copy-blob`
+2. You can perform backups through two ways.
+	1. Static Backups: Recommended only one storage account needs to be backed up. This type of backup could be configured by setting up a configuration file and passing that configuration module to backup the container.
+	2. Dynamic Backups: Recommended when more than one containers needs to be backed up. The automated backup for this mode is W.I.P but we can back it up manually by iterating over the list of containers and sending a new config file for each backup system.
+	
+	> Following is the config file structure accepted by azure-copy-blob
+	>```
+	>{
+	>	source: {
+	>		serviceEndpoint: '',
+	>		account: '',
+	>		accessKey: '',
+	>		connectionString: '',
+	>		container: '',
+	>		sasServiceParams: ''
+	>	},
+	>
+	>	target: {
+	>		serviceEndpoint: '',
+	>		account: '',
+	>		accessKey: '',
+	>		connectionString: '',
+	>		container: ''
+	>	}
+	>}
+	>```
+3. Define this configuration in a file say, `AzureConfig.js` and add the following code
+```
+	module.exports = {
+		//...structure of config JSON
+	}
+```
+4. Calling the copy API.
+```
+import AzureCopyBlob from 'azure-copy-blob'
+import AzureConfig from '../config/AzureConfig.js'
+
+// ... Code goes here
+
+AzureCopyBlob.triggerBackupBlobStorage (AzureConfig)
+	.then (success => {
+		// handle success backup
+	})
+	.cathc (error => {
+		// handle error backup
+	});
+
+
+// .. rest of the code goes here
+```
+
 ## Config file format
+The config file contains the URLs, Signatures and API keys.
+### Demystifying config file properties
+1. `source` property contains the source container properties from where we want to backup data. 
+2. `target` property contains the target/ backup storage container properties where we want to backup data.
+
+`serviceEndpoint`: This represents the storage type service endpoint. It is a URL that you can find from the storage account and navigating to Blob from where you want to generate backup.<br/>
+`account`: This represents the name of the storage account.<br/>
+`accessKey`: This is the key you can find in  the Access Keys section of the storage account that you are willing to backup.<br/>
+`connectionString`: This is the connection string that you will find along with `accessKey` in Access Keys section of your storage account.<br/>
+`container`: The name of the container that you want to backup blobs from.<br/>
+`sasServiceParams`: This is the key that is required when you are backing up or accesssing the private blobs. SAS abbrivated as Shared Access Signature is used to access the private storages. The SAS tends to expire after certain time depends upon the time you provide at the time of creating SAS key. You can generate SAS key from Shared Access Signature section of the storage account. 
+> If your backup keeps failing, this might be because your SAS signature has expired. Try regenrating one or check the time stamps in the signature itself. You can always regenrate SAS keys, in case they expires. 
+
 ```
 {
 	source: {
@@ -8,7 +76,8 @@
 		account: '',
 		accessKey: '',
 		connectionString: '',
-		container: ''
+		container: '',
+		sasServiceParams: ''
 	},
 
 	target: {
@@ -16,7 +85,8 @@
 		account: '',
 		accessKey: '',
 		connectionString: '',
-		container: ''
+		container: '',
+		sasServiceParams: ''
 	}
 }
 ```
