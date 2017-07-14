@@ -31,11 +31,11 @@ exports.triggerBackupBlobStorage = config => {
 									var blob = blobs[i];
 
 									let blobURI = sourceBlobService.getUrl(config.source.container, blob.Name, null, config.source.serviceEndpoint) + config.source.sasServiceParams;
-									blobNames.push({ name: val.Name, URI: blobURI });
+									blobNames.push({ name: blob.Name, URI: blobURI });
 
 									// call the backup service to backup the current BLOB
 
-									targetBlobService.startCopyBlob(blobURI, config.target.container, 'backup_' + val.Name, (err, blob, response) => {
+									targetBlobService.startCopyBlob(blobURI, config.target.container, 'backup_' + blob.Name, (err, blob, response) => {
 										if (err) {
 											reject(err);
 										}
