@@ -30,7 +30,7 @@ exports.triggerBackupBlobStorage = config => {
 								for (let i=0; i < blobs.length; i++) {
 									var blob = blobs[i];
 
-									let blobURI = sourceBlobService.getUrl (config.source.container, blob.Name, config.source.serviceEndpoint) + config.source.sasServiceParams;
+									let blobURI = sourceBlobService.getUrl (config.source.container, blob.Name, null, config.source.serviceEndpoint) + config.source.sasServiceParams;
 									blobNames.push ({name: val.Name, URI: blobURI});
 
 									// call the backup service to backup the current BLOB
@@ -42,7 +42,7 @@ exports.triggerBackupBlobStorage = config => {
 									});
 
 									if (i == blobs.length-1)
-										resolve ('Backed up '+ (i-1) +' blob(s)');
+										resolve ('Backed up '+ (i+1) +' blob(s)');
 
 								}
 							} else {
