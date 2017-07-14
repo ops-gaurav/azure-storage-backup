@@ -1,6 +1,6 @@
 {
   "name": "azure-copy-blob",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,5 +18,5 @@
     "azure-storage": "^2.2.1",
     "babel-polyfill": "^6.23.0",
     "winston": "^2.3.1"
-  } 
+  }
 }
