@@ -61,4 +61,32 @@ exports.triggerBackupBlobStorage = config => {
 			reject('Connection with the source endpoint failed. Check configurations and signatures in the config object.');
 		}
 	});
+};
+
+/**
+ * @desc call this method to trigger backing up the whole blob container
+ * @param {Object} config representing the Azure connection configurations including container name.
+ * @return {Promise} that resolves or rejects the backup promise
+ */
+exports.triggerBackupContainer = config => {
+	return new Promise ((resolve, reject) => {
+		let storageAccountConnection = AzureStorage.createBlobService (config.source.account, config.source.accessKey);
+
+		if (storageAccountConnection) {
+			storageAccountConnection.listContainersSegmented (undefined, config.options.containerOptions, (err, enteries, response) => {
+				if (err) {
+					reject (err);
+				} else if (response && response.body) {
+					
+					const { EnumerationResults: { Containers:  {Container }} } = response.body;
+					
+
+				} else {
+					reject ('Error getting containers list.')
+				}
+			})
+		} else {
+			reject ('Account not resolved.');
+		}
+	});
 }
