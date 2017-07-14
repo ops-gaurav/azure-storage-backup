@@ -1,6 +1,6 @@
 {
   "name": "azure-copy-blob",
-  "version": "1.0.3",
+  "version": "1.0.31",
   "description": "",
   "main": "index.js",
   "scripts": {
