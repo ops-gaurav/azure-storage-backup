@@ -1,0 +1,11 @@
+#! /usr/bin/env node
+
+/**
+ * The starter script for the app
+ * @author gaurav
+ */
+require('babel-core/register');
+require('babel-polyfill');
+require ('dotenv').config();
+
+module.exports = require ('../index');
