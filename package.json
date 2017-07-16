@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers js:babel-core/register tests/container_backup_test.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "azure-storage": "^2.2.1",
     "babel-polyfill": "^6.23.0",
     "chai": "^4.1.0",
+    "chai-as-promised": "^7.1.1",
     "dotenv": "^4.0.0",
     "mocha": "^3.4.2",
     "winston": "^2.3.1"

@@ -2,6 +2,9 @@
 
 azure-copy-blob is an npm module to generate the azure storage backups. Primarily this is designed to do BLOB storage backups. In order to use this plugin, you need to have an Azure account. You need to create a storage account  and need to have the access keys for the same. 
 
+> 1. You can also use es5 syntax. The one provided in examples is es6 example. But you can simply replace the `import` syntax with the nodejs es5 `require`.
+> 2. The plugin is using Promises rather than callbacks.
+
 ## Usage
 1. Install using the following command<br/>
 `npm install --save azure-copy-blob`

@@ -1,10 +1,24 @@
-var expect = require ('chai').expect;
-var config = require ('./azure_config');
-var index = require ('../index');
+/**
+ * @desc unit tests to test the package backup system.
+ * @author gaurav
+ */
+import Chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import config from './azure_config';
+import index from  '../index';
+import assert from 'assert';
 
-var waitTime = 20000;
+let expect = Chai.expect;
+let waitTime = 30000;
 
-describe ('The Azure copy blob tests', function() {
+Chai.use (chaiAsPromised);
+
+/**
+ * VERIFIED TEST? add skip to skip it
+ * add describe.skip to all tests that you want to skip. (Units that already have been tested)
+ */
+
+describe ('**** AZURE COPY BLOB TESTS ****', function() {
 
 	/**
 	 * Test #1 to test the backup based upon the 
@@ -13,16 +27,19 @@ describe ('The Azure copy blob tests', function() {
 	 * don't use arrow functions because this.promise is not
 	 * accessible with the arrow functions.
 	 */
-	describe ('testing blobs backup in container', function() {
+	describe.skip ('Testing blobs backup in container', function() {
 		this.timeout (waitTime);
-		it ('will handle the container backup promise', (done) => {
+		it ('will handle the container backup promise', done => {
 			
-			var resultPromise = index.triggerBackupBlobStorage (config);
+			let resultPromise = index.triggerBackupBlobStorage (config);
+
 			resultPromise.then (success => {
 				expect (success).to.equal ('success');
 				done();
 			}).catch (err => {
 				console.error (err);
+				
+				assert.fail (err);
 				done();
 			});
 		})
@@ -33,11 +50,19 @@ describe ('The Azure copy blob tests', function() {
 	 * This will use the account name and will
 	 * back up all the containers inside the storage account.
 	 */
-	describe ('testing container based backing up', function () {
+	describe ('Testing container based backing up', function () {
 		this.timeout (waitTime);
 
-		it ('will handle the account backup promise', (done) => {
+		it ('will handle the account backup promise', done => {
+			let resultPromise = index.triggerBackupContainer(config);
 
+			resultPromise.then (success => {
+				expect (success).to.equal ('success');
+				done();
+			}).catch (error => {
+				assert.fail (error);
+				done();
+			})
 		})
 	});
 });

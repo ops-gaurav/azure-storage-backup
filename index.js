@@ -1,3 +1,8 @@
+/**
+ * @desc the main file that contains all the relevant public callback functions to 
+ * trigger the azure callback request.
+ * @author gaurav 
+ */
 var AzureStorage = require('azure-storage');
 
 var exports = module.exports = {};
@@ -6,6 +11,7 @@ var exports = module.exports = {};
  * @desc trigger the Blob Storage back up AZURE API
  * @param {Object} config representing the source and target configurations of the AZURE BLOB storage
  * @return {Promise}
+ * @author gaurav
  */
 exports.triggerBackupBlobStorage = config => {
 	return new Promise((resolve, reject) => {
@@ -44,13 +50,8 @@ exports.triggerBackupBlobStorage = config => {
 												// call the backup service to backup the current BLOB
 
 												targetBlobService.startCopyBlob (blobURI, config.target.container, 'backup_' + blob.Name, (err, blob, response) => {
-
-													console.log ('here');
-
 													if (err) {
 														reject(err);
-													} else {
-														console.log (blob.Name+ ' backed up.');
 													}
 												});
 
@@ -86,15 +87,16 @@ exports.triggerBackupBlobStorage = config => {
 
 /**
  * @desc call this method to trigger backing up the whole blob container
- * @param {Object} config representing the Azure connection configurations including container name.
+ * @param {Object} config representing the Azure connection configurations including account name to backup.
  * @return {Promise} that resolves or rejects the backup promise
+ * @author gaurav
  */
 exports.triggerBackupContainer = config => {
 	return new Promise((resolve, reject) => {
 		let storageAccountConnection = AzureStorage.createBlobService(config.source.account, config.source.accessKey);
 
 		if (storageAccountConnection) {
-			storageAccountConnection.listContainersSegmented(undefined, config.options.containerOptions, (err, enteries, response) => {
+			storageAccountConnection.listContainersSegmented(undefined, null, (err, containers, response) => {
 				if (err) {
 					reject(err);
 				} else if (response && response.body) {
@@ -109,7 +111,11 @@ exports.triggerBackupContainer = config => {
 						}
 					} = response.body;
 
-					
+					console.log (Container);
+					for (var i=0; i< Container.length; i++) {
+						
+					}
+					resolve ('success!');
 
 				} else {
 					reject('Error getting containers list.')
