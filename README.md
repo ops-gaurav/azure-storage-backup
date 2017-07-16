@@ -90,3 +90,22 @@ The config file contains the URLs, Signatures and API keys.
 	}
 }
 ```
+
+## Testing
+In order to run unit tests in your system, you have to define a `.env` file in the application root directory. The `.env` file contains all the relevant properties to be defined in config used by node-copy-blob. The following example shows a sample `.env` file.
+```
+SOURCE_ENDPOINT=<source-endpoint-url> 
+SOURCE_ACCOUNT=<storage-account>
+SOURCE_ACCESS_KEY=<source-access-key>
+SOURCE_CONNECTION_STRING=<source-connection-string>
+SOURCE_CONTAINER=<source-storage-container>
+SOURCE_SAS_SIGNATURE=<source-sas-signature>
+
+TARGET_ENDPOINT=<target-endpoint-url>
+TARGET_ACCOUNT=<target-account>
+TARGET_ACCESS_KEY=<target-access-key>
+AccountName=<target-account-name>
+TARGET_CONTAINER=<target-container-name>
+
+
+```
