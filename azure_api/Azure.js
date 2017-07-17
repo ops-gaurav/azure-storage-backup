@@ -12,10 +12,12 @@ var self = this;
  * service instance by default.
  * @param {Object} config represent the Azure Connection configurations 
  */
-function AzureStorage(config) {
+function AzureStorage (config) {
 	self.config = config;
 	self._azureBlobService = az.createBlobService(config.source.account, config.source.accessKey);
 	self._azureTargetBlogService = az.createBlobService(config.target.account, config.target.accessKey);
+
+	self._azureTableService = az.createTableService ();
 }
 
 /**
@@ -246,6 +248,15 @@ AzureStorage.prototype.copyAccountContainers = () => {
 			// });
 		}).catch(err => reject(err));
 	});
+}
+
+/**
+ * call azure API to backup data from source table to target table
+ * @param {string} sourceTableName represents the name of the table from source account
+ * @param {string} targetTableName name of the table from target account
+ */
+AzureStorage.prototype.copyTable = (sourceTableName, targetTableName) => {
+	
 }
 
 module.exports = config => new AzureStorage(config);
