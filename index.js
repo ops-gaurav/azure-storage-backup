@@ -31,6 +31,7 @@ exports.triggerBackupBlobStorage = config => {
 							let blobs = response.body.EnumerationResults.Blobs.Blob;
 							let blobNames = [];
 
+							// copy one by one to target
 							if (config.target.container) {
 								targetBlobService.createContainerIfNotExists(config.target.container, (err, result, response) => {
 									if (!err) {
@@ -113,7 +114,10 @@ exports.triggerBackupContainer = config => {
 
 					console.log (Container);
 					for (var i=0; i< Container.length; i++) {
-						
+						var container = Container[i];
+
+						var containerName = container.Name;
+						// process backing up the container and the items under it
 					}
 					resolve ('success!');
 
