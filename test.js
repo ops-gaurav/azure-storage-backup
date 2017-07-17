@@ -1,6 +1,5 @@
 var config = require ('./tests/azure_config.js');
-var Azure = require ('./azure_api/Azure.js')(config);
+var Azure = require ('./index.js')(config);
 
-Azure.copyAccountContainers ()
-	.then (success => console.log (success))
-	.catch (error => console.log (error));
+if (Azure.triggerBlobAccountBackup())
+	console.log ('backed up');

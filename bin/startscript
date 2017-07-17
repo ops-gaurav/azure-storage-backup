@@ -8,4 +8,4 @@ require('babel-core/register');
 require('babel-polyfill');
 require ('dotenv').config();
 
-module.exports = require ('../index');
+module.exports = require ('../index')(config);
