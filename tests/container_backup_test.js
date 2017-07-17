@@ -27,7 +27,7 @@ describe ('**** AZURE COPY BLOB TESTS ****', function() {
 	 * don't use arrow functions because this.promise is not
 	 * accessible with the arrow functions.
 	 */
-	describe.skip ('Testing blobs backup in container', function() {
+	describe ('Testing blobs backup in container', function() {
 		this.timeout (waitTime);
 		it ('will handle the container backup promise', done => {
 			
@@ -50,7 +50,7 @@ describe ('**** AZURE COPY BLOB TESTS ****', function() {
 	 * This will use the account name and will
 	 * back up all the containers inside the storage account.
 	 */
-	describe ('Testing container based backing up', function () {
+	describe.skip ('Testing container based backing up', function () {
 		this.timeout (waitTime);
 
 		it ('will handle the account backup promise', done => {

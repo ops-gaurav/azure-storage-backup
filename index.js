@@ -112,7 +112,7 @@ exports.triggerBackupContainer = config => {
 						}
 					} = response.body;
 
-					console.log (Container);
+					// console.log (Container);
 					for (var i=0; i< Container.length; i++) {
 						var container = Container[i];
 

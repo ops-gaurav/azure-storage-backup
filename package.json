@@ -21,6 +21,7 @@
     "azure": "^2.0.0-preview",
     "azure-storage": "^2.2.1",
     "babel-polyfill": "^6.23.0",
+    "batch": "^0.6.1",
     "chai": "^4.1.0",
     "chai-as-promised": "^7.1.1",
     "dotenv": "^4.0.0",
