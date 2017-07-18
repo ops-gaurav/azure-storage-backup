@@ -1,9 +1,8 @@
 'use strict';
 
 const az = require('azure-storage');
-const Batch = require('batch');
 
-let batch = new Batch();
+const entityGenerator = az.TableUtilities.entityGenerator;
 
 var self = this;
 /**
@@ -12,12 +11,14 @@ var self = this;
  * service instance by default.
  * @param {Object} config represent the Azure Connection configurations 
  */
-function AzureStorage (config) {
+function AzureStorage(config) {
 	self.config = config;
 	self._azureBlobService = az.createBlobService(config.source.account, config.source.accessKey);
 	self._azureTargetBlogService = az.createBlobService(config.target.account, config.target.accessKey);
 
-	self._azureTableService = az.createTableService ();
+
+	self._azureTableSourceService = az.createTableService(config.source.account, config.source.accessKey);
+	self._azureTableTargetService = az.createTableService(config.target.account, config.target.accessKey);
 }
 
 /**
@@ -250,13 +251,112 @@ AzureStorage.prototype.copyAccountContainers = () => {
 	});
 }
 
+
+/**
+ * list the tables under a account
+ * @param  {boolean} target if true then tables from target is fetched.
+ * @return {Promise}
+ */
+AzureStorage.prototype.listTables = target => {
+
+	return new Promise((resolve, reject) => {
+		let account = self._azureTableSourceService;
+
+		if (target) {
+			account = self._azureTableTargetService;
+		}
+
+		let tableNames = [];
+		account.listTablesSegmented(undefined, undefined, (err, entries, response) => {
+			// console.log (response);
+			if (err) {
+				reject(err);
+			} else {
+				resolve(entries.entries);
+			}
+		})
+	});
+
+}
+
+/**
+ * query all enteries in a table
+ * @param {string} tableName - name of the table to query
+ * @returns {Promise} giving the list of entities inside a table
+ */
+AzureStorage.prototype.tableQueryAll = tableName => {
+
+	return new Promise((resolve, reject) => {
+		self._azureTableSourceService.queryEntities(tableName, undefined, undefined, (err, queryResultContinuation, response) => {
+			if (err) {
+				reject(err);
+			} else if (response) {
+
+				const entities = queryResultContinuation.entries;
+				resolve(entities);
+			}
+		})
+	});
+}
+
 /**
  * call azure API to backup data from source table to target table
  * @param {string} sourceTableName represents the name of the table from source account
  * @param {string} targetTableName name of the table from target account
  */
 AzureStorage.prototype.copyTable = (sourceTableName, targetTableName) => {
-	
+	return new Promise((resolve, reject) => {
+		// first fetch the enteries from sourcetable..
+		// backup to target.. if not empty 
+
+		AzureStorage.prototype.tableQueryAll(sourceTableName)
+			.then(entities => {
+				self._azureTableTargetService.createTableIfNotExists(targetTableName, undefined, (error, result, response) => {
+					if (error) {
+						reject(error);
+					} else {
+
+						entities.forEach((entity, index) => {
+							self._azureTableTargetService.insertOrMergeEntity(targetTableName, entity, (error, result, response) => {
+								if (error) {
+									reject(error);
+								} else {
+									if (index == entities.length - 1)
+										resolve('success');
+								}
+							});
+						});
+					}
+				});
+			})
+			.catch(err => reject(err));
+	});
+}
+
+/**
+ * call AZURE API to trigger backing up of all the storage tables
+ * @param {boolean} target represents whether to take backup from target account
+ * @return {Promise} promise resolving or rejecting backup process.
+ */
+AzureStorage.prototype.copyAllTables = target => {
+	return new Promise ((resolve, reject) => {
+		AzureStorage.prototype.listTables()
+			.then (tables => {
+
+				// console.log (tables);
+				if (tables && tables.length > 0) {
+					tables.forEach ((table, index) => {
+						AzureStorage.prototype.copyTable (table, 'backup'+ table)
+							.then (success => {
+								if (index == tables.length -1)
+									resolve ('success');
+							}).catch (err => reject (err));
+					});
+				} else {
+					resolve ('done');
+				}
+			}).catch (err => reject (err));
+	});
 }
 
 module.exports = config => new AzureStorage(config);

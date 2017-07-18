@@ -4,6 +4,7 @@ azure-copy-blob is an npm module to generate the azure storage backups. Primaril
 
 > 1. You can also use es5 syntax. The one provided in examples is es6 example. But you can simply replace the `import` syntax with the nodejs es5 `require`.
 > 2. The plugin is using Promises rather than callbacks.
+> 3. In order to use Table services. Both accounts needs to be <b>General Purpose Account</b>. That is defined at the time of creating a storage account.
 
 ## Usage
 1. Install using the following command<br/>
