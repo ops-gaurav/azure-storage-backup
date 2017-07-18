@@ -5,10 +5,8 @@
  */
 // var AzureStorage = require('azure-storage');
 
-var exports = module.exports = {};
-
 module.exports = config => {
-	var Azure = require('./azure_api/Azure.js')(config);
+	const Azure = require('./azure_api/Azure.js')(config);
 	return {
 
 
@@ -53,6 +51,24 @@ module.exports = config => {
 		 */
 		triggerAccountTablesBackup: () => {
 			return new Promise ((resolve, reject) => Azure.copyAllTables (). then (success => resolve (success)).catch(err => reject (err)));
+		},
+
+
+		/**
+		 * @desc trigger to backup all the tables and blob under the storage account.
+		 * @returns {Promise} resolving the succes backup
+		 */
+		triggerWholeAccountBackup: () => {
+			return new Promise ((resolve, reject) => {
+				Azure.copyAccountContainers()
+					.then (success => {
+						Azure.copyAllTables().then (success => {
+							resolve ('success');
+						}).catch (error => reject (error));
+					}).catch (error => {
+						reject (error);
+					});
+			});
 		}
 
 	}

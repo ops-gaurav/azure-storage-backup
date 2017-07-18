@@ -339,23 +339,23 @@ AzureStorage.prototype.copyTable = (sourceTableName, targetTableName) => {
  * @return {Promise} promise resolving or rejecting backup process.
  */
 AzureStorage.prototype.copyAllTables = target => {
-	return new Promise ((resolve, reject) => {
+	return new Promise((resolve, reject) => {
 		AzureStorage.prototype.listTables()
-			.then (tables => {
+			.then(tables => {
 
 				// console.log (tables);
 				if (tables && tables.length > 0) {
-					tables.forEach ((table, index) => {
-						AzureStorage.prototype.copyTable (table, 'backup'+ table)
-							.then (success => {
-								if (index == tables.length -1)
-									resolve ('success');
-							}).catch (err => reject (err));
+					tables.forEach((table, index) => {
+						AzureStorage.prototype.copyTable(table, 'backup' + table)
+							.then(success => {
+								if (index == tables.length - 1)
+									resolve('success');
+							}).catch(err => reject(err));
 					});
 				} else {
-					resolve ('done');
+					resolve('done');
 				}
-			}).catch (err => reject (err));
+			}).catch(err => reject(err));
 	});
 }
 

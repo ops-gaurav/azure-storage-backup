@@ -2,6 +2,7 @@ var config = require('./azure_config.js');
 var AzureStorage = require('../azure_api/Azure.js')(config);
 var expect = require('chai').expect;
 var assert = require('assert');
+var index = require ('../index.js');
 
 let timeout = 30000;
 
@@ -9,7 +10,7 @@ let timeout = 30000;
 describe('Testing Azure API class', function () {
 
 	// Test #1 tp get the container list
-	describe.skip('Test listing container', function () {
+	describe.skip ('Test listing container', function () {
 		this.timeout(timeout);
 		it('should resolve the container list', done => {
 			var resolvePromise = AzureStorage.listContainers();
@@ -152,7 +153,7 @@ describe('Testing Azure API class', function () {
 	 * UNIT TEST
 	 * TEST #9 to copy all the tables into another.
 	 */
-	describe ('Test to copy whole tables into another account', function () {
+	describe.skip ('Test to copy whole tables into another account', function () {
 		this.timeout (timeout);
 
 		it ('should resolve the copy process of account tables into another account', done => {
