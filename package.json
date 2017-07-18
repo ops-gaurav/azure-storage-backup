@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sharma02gaurav/azure-copy-blob.git"
+    "url": "git+https://github.com/sharma02gaurav/azure-storage-backup"
   },
   "keywords": [],
   "author": "",

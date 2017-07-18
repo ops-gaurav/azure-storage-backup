@@ -1,4 +1,4 @@
-# azure-copy-blob
+# Microsoft Azure Storage Account Backup
 
 azure-copy-blob is an npm module to generate the azure storage backups. Primarily this is designed to do BLOB storage backups. In order to use this plugin, you need to have an Azure account. You need to create a storage account  and need to have the access keys for the same. 
 
@@ -8,7 +8,7 @@ azure-copy-blob is an npm module to generate the azure storage backups. Primaril
 
 ## Usage
 1. Install using the following command<br/>
-`npm install --save azure-copy-blob`
+`npm install --save azure-storage-backup`
 2. You can perform backups through two ways.
 	1. Static Backups: Recommended only one storage account needs to be backed up. This type of backup could be configured by setting up a configuration file and passing that configuration module to backup the container.
 	2. Dynamic Backups: Recommended when more than one containers needs to be backed up. The automated backup for this mode is W.I.P but we can back it up manually by iterating over the list of containers and sending a new config file for each backup system.
