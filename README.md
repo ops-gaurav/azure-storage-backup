@@ -1,6 +1,6 @@
 # Microsoft Azure Storage Account Backup
 
-azure-copy-blob is an npm module to generate the azure storage backups. Primarily this is designed to do BLOB storage backups. In order to use this plugin, you need to have an Azure account. You need to create a storage account  and need to have the access keys for the same. 
+azure-storage-backup is an npm module to generate the azure storage backups. Primarily this was designed to do BLOB storage backups, but it now also supports Table storage backups. In order to use this plugin, you need to have an Azure account. You need to create a storage account and need to have the access keys for the same. 
 
 > 1. Require node >= 4.4.5
 > 2. The plugin is using Promises rather than callbacks.
@@ -11,7 +11,7 @@ azure-copy-blob is an npm module to generate the azure storage backups. Primaril
 `npm install --save azure-storage-backup`
 2. You can perform backups through two ways.
 	1. Static Backups: Recommended only one storage account needs to be backed up. This type of backup could be configured by setting up a configuration file and passing that configuration module to backup the container.
-	2. Dynamic Backups: Recommended when more than one containers needs to be backed up. The automated backup for this mode is W.I.P but we can back it up manually by iterating over the list of containers and sending a new config file for each backup system.
+	2. Dynamic Backups: Recommended when more than one containers needs to be backed up. <strike>The automated backup for this mode is W.I.P but we can back it up manually by iterating over the list of containers and sending a new config file for each backup system.</strike> System have been implemented with whole account backup functionality. The example below shows how you can take backup of whoule Azure storage account using a single function call.
 	
 	> Following is the config file structure accepted by azure-copy-blob
 	>```
@@ -47,6 +47,9 @@ var AzureStorage = require ('azure-storage-backup)(config);
 
 // ... Code goes here
 
+/*
+* This will backup whole storage account into the target account
+*/
 AzureStorage.triggerWholeAccountBackup()
 	.then (success => console.log ('backed up!))
 	.catch (err => console.log (err))
