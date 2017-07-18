@@ -1,6 +1,6 @@
 {
-  "name": "azure-copy-blob",
-  "version": "1.0.51",
+  "name": "azure-storage-backup",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {

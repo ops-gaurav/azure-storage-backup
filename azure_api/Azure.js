@@ -191,7 +191,7 @@ AzureStorage.prototype.copyContainerBlobs = (containerName, targetContainerName)
 		AzureStorage.prototype.listBlobs(containerName).then(success => {
 			// console.log ('calling after resolving blobs');
 			if (!targetContainerName) {
-				targetContainerName = 'backup' + new Date().getTime() + '' + containerName;
+				targetContainerName = containerName;
 			}
 			// console.log (targetContainerName);
 			self._azureTargetBlogService.createContainerIfNotExists(targetContainerName, (err, result, response) => {
@@ -202,6 +202,7 @@ AzureStorage.prototype.copyContainerBlobs = (containerName, targetContainerName)
 
 					for (let i = 0; i < success.length; i++) {
 						let blob = success[i];
+						console.log (blob.URL);
 						self._azureTargetBlogService.startCopyBlob(blob.URL, targetContainerName, 'backup_' + blob.name, (err, blob, response) => {
 							if (err) {
 								reject(err);
@@ -232,9 +233,9 @@ AzureStorage.prototype.copyAccountContainers = () => {
 			for (let i = 0; i < containers.length; i++) {
 				var containerName = containers[i];
 
-				AzureStorage.prototype.copyContainerBlobs(containerName, 'backup' + containerName)
+				AzureStorage.prototype.copyContainerBlobs(containerName,  containerName)
 					.then(message => {
-						console.log(message);
+						// console.log(message);
 						if (message !== 'success') {
 							// console.log('rejected')
 							reject('error');
@@ -346,7 +347,7 @@ AzureStorage.prototype.copyAllTables = target => {
 				// console.log (tables);
 				if (tables && tables.length > 0) {
 					tables.forEach((table, index) => {
-						AzureStorage.prototype.copyTable(table, 'backup' + table)
+						AzureStorage.prototype.copyTable(table, table)
 							.then(success => {
 								if (index == tables.length - 1)
 									resolve('success');

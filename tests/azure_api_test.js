@@ -2,7 +2,7 @@ var config = require('./azure_config.js');
 var AzureStorage = require('../azure_api/Azure.js')(config);
 var expect = require('chai').expect;
 var assert = require('assert');
-var index = require ('../index.js');
+var index = require('../index.js');
 
 let timeout = 30000;
 
@@ -10,7 +10,7 @@ let timeout = 30000;
 describe('Testing Azure API class', function () {
 
 	// Test #1 tp get the container list
-	describe.skip ('Test listing container', function () {
+	describe.skip('Test listing container', function () {
 		this.timeout(timeout);
 		it('should resolve the container list', done => {
 			var resolvePromise = AzureStorage.listContainers();
@@ -95,33 +95,33 @@ describe('Testing Azure API class', function () {
 	/**
 	 * TEST #6 to test the tables listing inside a storage account
 	 */
-	describe.skip ('Test to tables listing under a storage account', function () {
+	describe.skip('Test to tables listing under a storage account', function () {
 		this.timeout(timeout);
 
 		it('should resolve the listing process and return an array', done => {
 			var resolvePromise = AzureStorage.listTables();
 
-			resolvePromise.then (success => {
-				expect (success).to.be.an ('array');
+			resolvePromise.then(success => {
+				expect(success).to.be.an('array');
 				done();
-			}).catch (err => {
-				expect (err).to.equal (undefined);
+			}).catch(err => {
+				expect(err).to.equal(undefined);
 				done()
 			});
 		});
 	});
 
 	// TEST #7 to query the table and list all items
-	describe.skip ('Test to query all enteries in a table', function () {
-		this.timeout (timeout);
+	describe.skip('Test to query all enteries in a table', function () {
+		this.timeout(timeout);
 
-		it ('should resolve the query process', done => {
+		it('should resolve the query process', done => {
 			var resolvePromise = AzureStorage.tableQueryAll('testtable');
 
-			resolvePromise.then (success => {
-				assert (success).to.be.an ('array');
+			resolvePromise.then(success => {
+				assert(success).to.be.an('array');
 				done();
-			}).catch (err => {
+			}).catch(err => {
 				done();
 			})
 		})
@@ -131,19 +131,19 @@ describe('Testing Azure API class', function () {
 	 * UNIT TEST
 	 * TEST #8 to copy one table into another
 	 */
-	describe.skip ('Test to copy one table into another', function () {
-		this.timeout (timeout);
+	describe.skip('Test to copy one table into another', function () {
+		this.timeout(timeout);
 
-		it ('should resolve the copy process of one table into another', done => {
-			var resolvePromise = AzureStorage.copyTable ('testtable', 'backuptesttable');
+		it('should resolve the copy process of one table into another', done => {
+			var resolvePromise = AzureStorage.copyTable('testtable', 'backuptesttable');
 
-			resolvePromise.then (success => {
-				expect (success).to.be.a ('string');
-				expect (success).to.equal ('success');
+			resolvePromise.then(success => {
+				expect(success).to.be.a('string');
+				expect(success).to.equal('success');
 
 				done();
-			}).catch (err => {
-				console.log (err);
+			}).catch(err => {
+				console.log(err);
 				done();
 			});
 		});
@@ -153,17 +153,17 @@ describe('Testing Azure API class', function () {
 	 * UNIT TEST
 	 * TEST #9 to copy all the tables into another.
 	 */
-	describe.skip ('Test to copy whole tables into another account', function () {
-		this.timeout (timeout);
+	describe.skip('Test to copy whole tables into another account', function () {
+		this.timeout(timeout);
 
-		it ('should resolve the copy process of account tables into another account', done => {
-			var resolvePromise = AzureStorage.copyAllTables ()
-				.then (success => {
-					expect (success).to.be.a ('string');
-					expect (success).to.equal ('success');
+		it('should resolve the copy process of account tables into another account', done => {
+			var resolvePromise = AzureStorage.copyAllTables()
+				.then(success => {
+					expect(success).to.be.a('string');
+					expect(success).to.equal('success');
 
 					done();
-				}).catch (error => done());
+				}).catch(error => done());
 		});
 	});
 

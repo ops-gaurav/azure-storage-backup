@@ -2,7 +2,7 @@
 
 azure-copy-blob is an npm module to generate the azure storage backups. Primarily this is designed to do BLOB storage backups. In order to use this plugin, you need to have an Azure account. You need to create a storage account  and need to have the access keys for the same. 
 
-> 1. You can also use es5 syntax. The one provided in examples is es6 example. But you can simply replace the `import` syntax with the nodejs es5 `require`.
+> 1. Require node >= 4.4.5
 > 2. The plugin is using Promises rather than callbacks.
 > 3. In order to use Table services. Both accounts needs to be <b>General Purpose Account</b>. That is defined at the time of creating a storage account.
 
@@ -42,19 +42,14 @@ azure-copy-blob is an npm module to generate the azure storage backups. Primaril
 ```
 4. Calling the copy API.
 ```
-import AzureCopyBlob from 'azure-copy-blob'
-import AzureConfig from '../config/AzureConfig.js'
+var AzureConfig = require('../config/AzureConfig.js');
+var AzureStorage = require ('azure-storage-backup)(config);
 
 // ... Code goes here
 
-AzureCopyBlob.triggerBackupBlobStorage (AzureConfig)
-	.then (success => {
-		// handle success backup
-	})
-	.cathc (error => {
-		// handle error backup
-	});
-
+AzureStorage.triggerWholeAccountBackup()
+	.then (success => console.log ('backed up!))
+	.catch (err => console.log (err))
 
 // .. rest of the code goes here
 ```
@@ -95,7 +90,9 @@ The config file contains the URLs, Signatures and API keys.
 }
 ```
 
-## Testing
+## Development and contribution
+Feel free to pull and raise issues [here](https://github.com/sharma02gaurav/azure-copy-blob/issues).
+### Testing
 In order to run unit tests in your system, you have to define a `.env` file in the application root directory. The `.env` file contains all the relevant properties to be defined in config used by node-copy-blob. The following example shows a sample `.env` file.
 ```
 SOURCE_ENDPOINT=<source-endpoint-url> 
@@ -111,5 +108,13 @@ TARGET_ACCESS_KEY=<target-access-key>
 AccountName=<target-account-name>
 TARGET_CONTAINER=<target-container-name>
 
-
 ```
+
+## Links
+* [azure-storage-node](https://github.com/Azure/azure-storage-node)
+* [Microsoft Azure Storage SDK for Node.js](http://azure.github.io/azure-storage-node/)
+* [Issues Tracking](https://github.com/sharma02gaurav/azure-copy-blob/issues)
+
+
+## Contact
+[sharma02gaurav@gmail.com](mailto:sharma02gaurav@gmail.com)
