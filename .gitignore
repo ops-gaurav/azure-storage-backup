@@ -2,4 +2,4 @@ node_modules/
 *.log
 .env
 tempREDME.md
-test.js
+.vscode
