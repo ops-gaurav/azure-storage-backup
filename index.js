@@ -43,6 +43,16 @@ module.exports = config => {
 						reject(error);
 					});
 			});
+		},
+
+
+		/**
+		 * @desc trigger to backup all tables inside the storage account. This will trigger to
+		 * backup all the tables from source accont to target account
+		 * @returns {Promise} resolving or rejecting the backup process
+		 */
+		triggerAccountTablesBackup: () => {
+			return new Promise ((resolve, reject) => Azure.copyAllTables (). then (success => resolve (success)).catch(err => reject (err)));
 		}
 
 	}
