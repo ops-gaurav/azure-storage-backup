@@ -4,7 +4,7 @@ const az = require('azure-storage');
 
 const entityGenerator = az.TableUtilities.entityGenerator;
 
-var self = this;
+var self = {};
 /**
  * self instantiates the azure object that populates the available options
  * with it. Invoking the consturctor will init the class with the sorce and target
