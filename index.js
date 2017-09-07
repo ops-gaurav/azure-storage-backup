@@ -15,16 +15,7 @@ module.exports = config => {
 		 * the target account
 		 * @returns {Promise} resolving and rejecting the request
 		 */
-		triggerBlobAccountBackup: () => {
-			Azure.copyAccountContainers()
-				.then(success => {
-					return true;
-				})
-				.catch(err => {
-					throw new Error(err);
-					// return false;
-				})
-		},
+		triggerBlobAccountBackup: () => Azure.copyAccountContainers(),
 
 		/**
 		 * @desc trigger to backup the container to another container
@@ -32,44 +23,21 @@ module.exports = config => {
 		 * @param {string} targetContainer name of target container to backup to
 		 * @returns {Promise} resolving and rejecting the request.
 		 */
-		triggerContainerBackup: (sourceContainer, targetContainer) => {
-			return new Promise((resolve, reject) => {
-				Azure.copyContainerBlobs(sourceContainer, targetContainer)
-					.then(success => {
-						resolve(success);
-					}).catch(error => {
-						reject(error);
-					});
-			});
-		},
+		triggerContainerBackup: (sourceContainer, targetContainer) => Azure.copyContainerBlobs(sourceContainer, targetContainer),
 
 
 		/**
 		 * @desc trigger to backup all tables inside the storage account. This will trigger to
-		 * backup all the tables from source accont to target account
+		 * backup all the tables from source account to target account
 		 * @returns {Promise} resolving or rejecting the backup process
 		 */
-		triggerAccountTablesBackup: () => {
-			return new Promise ((resolve, reject) => Azure.copyAllTables (). then (success => resolve (success)).catch(err => reject (err)));
-		},
+		triggerAccountTablesBackup: () => Azure.copyAllTables (),
 
 
 		/**
 		 * @desc trigger to backup all the tables and blob under the storage account.
 		 * @returns {Promise} resolving the succes backup
 		 */
-		triggerWholeAccountBackup: () => {
-			return new Promise ((resolve, reject) => {
-				Azure.copyAccountContainers()
-					.then (success => {
-						Azure.copyAllTables().then (success => {
-							resolve ('success');
-						}).catch (error => reject (error));
-					}).catch (error => {
-						reject (error);
-					});
-			});
-		}
-
+		triggerWholeAccountBackup: () => Azure.copyAccountContainers()
 	}
 };

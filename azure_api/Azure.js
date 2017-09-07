@@ -16,7 +16,6 @@ function AzureStorage(config) {
 	self._azureBlobService = az.createBlobService(config.source.account, config.source.accessKey);
 	self._azureTargetBlogService = az.createBlobService(config.target.account, config.target.accessKey);
 
-
 	self._azureTableSourceService = az.createTableService(config.source.account, config.source.accessKey);
 	self._azureTableTargetService = az.createTableService(config.target.account, config.target.accessKey);
 }
@@ -36,7 +35,13 @@ AzureStorage.prototype.listContainers = () => {
 				// console.log (response);
 				let containersList = [];
 
-				const { EnumerationResults: { Containers: { Container } } } = response.body;
+				const {
+					EnumerationResults: {
+						Containers: {
+							Container
+						}
+					}
+				} = response.body;
 
 				// console.log (Container);
 				if (Container && Container.length) {
@@ -64,7 +69,13 @@ AzureStorage.prototype.listBlobs = container => {
 			if (err) {
 				reject(err);
 			} else if (response && response.body) {
-				const { EnumerationResults: { Blobs: { Blob } } } = response.body;
+				const {
+					EnumerationResults: {
+						Blobs: {
+							Blob
+						}
+					}
+				} = response.body;
 
 				// console.log (Blob);listBlobs
 
@@ -72,7 +83,7 @@ AzureStorage.prototype.listBlobs = container => {
 				if (Blob && typeof Blob.length == 'number') {
 					// array -> contains more than one blob
 					Blob.forEach((blob, index) => {
-						var URL = self._azureBlobService.getUrl(container, blob.Name, null, self.config.source.serviceEndpoint) + self.config.source.sasServiceParams;
+						let URL = self._azureBlobService.getUrl(container, blob.Name, null, self.config.source.serviceEndpoint) + self.config.source.sasServiceParams;
 						if (URL) {
 							blobNames.push({
 								name: blob.Name,
@@ -84,7 +95,7 @@ AzureStorage.prototype.listBlobs = container => {
 						}
 					});
 				} else if (Blob) {
-					var URL = self._azureBlobService.getUrl(container, Blob.Name, null, self.config.source.serviceEndpoint) + self.config.source.sasServiceParams;
+					let URL = self._azureBlobService.getUrl(container, Blob.Name, null, self.config.source.serviceEndpoint) + self.config.source.sasServiceParams;
 					if (URL) {
 						blobNames.push({
 							name: Blob.Name,
@@ -113,7 +124,13 @@ AzureStorage.prototype.listTargetBlobs = container => {
 			if (err) {
 				reject(err);
 			} else if (response && response.body) {
-				const { EnumerationResults: { Blobs: { Blob } } } = response.body;
+				const {
+					EnumerationResults: {
+						Blobs: {
+							Blob
+						}
+					}
+				} = response.body;
 
 				let blobNames = [];
 				if (Blob && typeof Blob.length == 'number') {
@@ -164,8 +181,9 @@ AzureStorage.prototype.getBlobUrl = (container, blob, target) => {
 			URL = self._azureBlobService.getUrl(container, blob, null, self.config.source.serviceEndpoint) + self.config.source.sasServiceParams;
 		// console.log (URL);
 		if (URL)
-			resolve(URL);
-		else reject('Cannot resolve URL');
+			return resolve(URL);
+
+		reject('Cannot resolve URL');
 
 	});
 }
@@ -202,7 +220,7 @@ AzureStorage.prototype.copyContainerBlobs = (containerName, targetContainerName)
 
 					for (let i = 0; i < success.length; i++) {
 						let blob = success[i];
-						console.log (blob.URL);
+						console.log(blob.URL);
 						self._azureTargetBlogService.startCopyBlob(blob.URL, targetContainerName, 'backup_' + blob.name, (err, blob, response) => {
 							if (err) {
 								reject(err);
@@ -233,7 +251,7 @@ AzureStorage.prototype.copyAccountContainers = () => {
 			for (let i = 0; i < containers.length; i++) {
 				var containerName = containers[i];
 
-				AzureStorage.prototype.copyContainerBlobs(containerName,  containerName)
+				AzureStorage.prototype.copyContainerBlobs(containerName, containerName)
 					.then(message => {
 						// console.log(message);
 						if (message !== 'success') {
@@ -289,13 +307,15 @@ AzureStorage.prototype.tableQueryAll = tableName => {
 
 	return new Promise((resolve, reject) => {
 		self._azureTableSourceService.queryEntities(tableName, undefined, undefined, (err, queryResultContinuation, response) => {
-			if (err) {
-				reject(err);
-			} else if (response) {
+			if (err)
+				return reject(err);
 
+			if (response) {
 				const entities = queryResultContinuation.entries;
-				resolve(entities);
+				return resolve(entities);
 			}
+
+			return reject('Empty response');
 		})
 	});
 }
@@ -313,21 +333,19 @@ AzureStorage.prototype.copyTable = (sourceTableName, targetTableName) => {
 		AzureStorage.prototype.tableQueryAll(sourceTableName)
 			.then(entities => {
 				self._azureTableTargetService.createTableIfNotExists(targetTableName, undefined, (error, result, response) => {
-					if (error) {
-						reject(error);
-					} else {
+					if (error)
+						return reject(error);
 
-						entities.forEach((entity, index) => {
-							self._azureTableTargetService.insertOrMergeEntity(targetTableName, entity, (error, result, response) => {
-								if (error) {
-									reject(error);
-								} else {
-									if (index == entities.length - 1)
-										resolve('success');
-								}
-							});
+					entities.forEach((entity, index) => {
+						self._azureTableTargetService.insertOrMergeEntity(targetTableName, entity, (error, result, response) => {
+							if (error) 
+								return reject(error);
+							
+							if (index == entities.length - 1)
+								return resolve('success');
+
 						});
-					}
+					});
 				});
 			})
 			.catch(err => reject(err));

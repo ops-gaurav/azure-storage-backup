@@ -1,8 +1,8 @@
-var config = require('./azure_config.js');
-var AzureStorage = require('../azure_api/Azure.js')(config);
-var expect = require('chai').expect;
-var assert = require('assert');
-var index = require('../index.js');
+const config = require('./azure_config.js');
+const AzureStorage = require('../azure_api/Azure.js')(config);
+const expect = require('chai').expect;
+const assert = require('assert');
+const index = require('../index.js');
 
 let timeout = 30000;
 
@@ -13,7 +13,7 @@ describe('Testing Azure API class', function () {
 	describe.skip('Test listing container', function () {
 		this.timeout(timeout);
 		it('should resolve the container list', done => {
-			var resolvePromise = AzureStorage.listContainers();
+			const resolvePromise = AzureStorage.listContainers();
 
 			resolvePromise.then(success => {
 				// console.log (success);
