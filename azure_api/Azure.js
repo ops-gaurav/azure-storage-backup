@@ -134,7 +134,7 @@ AzureStorage.prototype.listTargetBlobs = container => {
 
 				let blobNames = [];
 				if (Blob && typeof Blob.length == 'number') {
-					// arrray -> multiple blobs
+					// array -> multiple blobs
 					Blob.forEach((blob, index) => {
 						AzureStorage.prototype.getBlobUrl(container, blob.Name, true)
 							.then(success => {
@@ -213,24 +213,21 @@ AzureStorage.prototype.copyContainerBlobs = (containerName, targetContainerName)
 			}
 			// console.log (targetContainerName);
 			self._azureTargetBlogService.createContainerIfNotExists(targetContainerName, (err, result, response) => {
-
 				if (err) {
 					reject(err);
 				} else {
-
 					for (let i = 0; i < success.length; i++) {
 						let blob = success[i];
 						console.log(blob.URL);
-						self._azureTargetBlogService.startCopyBlob(blob.URL, targetContainerName, 'backup_' + blob.name, (err, blob, response) => {
-							if (err) {
-								reject(err);
-							}
-						})
 
-						if (i == success.length - 1) {
-							// console.log('copy containers resolved');
-							resolve('success');
-						}
+						self._azureTargetBlogService.startCopyBlob(blob.URL, targetContainerName, 'backup_' + blob.name, (err, blob, response) => {
+							if (err)
+								return reject(err)
+
+							if (i == success.length - 1)
+								// console.log('copy containers resolved');
+								return resolve('success');
+						})
 					}
 				}
 			});
@@ -270,6 +267,16 @@ AzureStorage.prototype.copyAccountContainers = () => {
 	});
 }
 
+/**
+ * copy using async
+ */
+// AzureStorage.prototype.copyAccountContainersAsync = async () => {
+// 	let containers = await AzureStorage.prototype.listContainers();
+// 	for (let container in containers) {
+// 		let message = await AzureStorage.prototype.copyContainerBlobs (container, container);
+// 	}
+// }
+
 
 /**
  * list the tables under a account
@@ -295,16 +302,14 @@ AzureStorage.prototype.listTables = target => {
 			}
 		})
 	});
-
 }
 
 /**
- * query all enteries in a table
+ * query all entries in a table
  * @param {string} tableName - name of the table to query
  * @returns {Promise} giving the list of entities inside a table
  */
 AzureStorage.prototype.tableQueryAll = tableName => {
-
 	return new Promise((resolve, reject) => {
 		self._azureTableSourceService.queryEntities(tableName, undefined, undefined, (err, queryResultContinuation, response) => {
 			if (err)
@@ -327,7 +332,7 @@ AzureStorage.prototype.tableQueryAll = tableName => {
  */
 AzureStorage.prototype.copyTable = (sourceTableName, targetTableName) => {
 	return new Promise((resolve, reject) => {
-		// first fetch the enteries from sourcetable..
+		// first fetch the entries from sourcetable..
 		// backup to target.. if not empty 
 
 		AzureStorage.prototype.tableQueryAll(sourceTableName)
@@ -338,9 +343,9 @@ AzureStorage.prototype.copyTable = (sourceTableName, targetTableName) => {
 
 					entities.forEach((entity, index) => {
 						self._azureTableTargetService.insertOrMergeEntity(targetTableName, entity, (error, result, response) => {
-							if (error) 
+							if (error)
 								return reject(error);
-							
+
 							if (index == entities.length - 1)
 								return resolve('success');
 

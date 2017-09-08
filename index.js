@@ -5,11 +5,9 @@
  */
 // var AzureStorage = require('azure-storage');
 
-module.exports = config => {
+module.exports =  config => {
 	const Azure = require('./azure_api/Azure.js')(config);
 	return {
-
-
 		/**
 		 * @desc trigger account backup. This by default backup all the containers in source account to
 		 * the target account

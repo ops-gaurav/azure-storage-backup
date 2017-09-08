@@ -1,11 +1,18 @@
 const config = require('./azure_config.js');
-const AzureStorage = require('../azure_api/Azure.js')(config);
 const expect = require('chai').expect;
 const assert = require('assert');
 const index = require('../index.js');
+const winston = require ('winston');
+
+let AzureStorage;
+try{
+	AzureStorage = require('../azure_api/Azure.js')(config);
+} catch (err) {
+	console.log ('ERROR', err)
+	process.exit (5);
+}
 
 let timeout = 30000;
-
 
 describe('Testing Azure API class', function () {
 
@@ -77,7 +84,7 @@ describe('Testing Azure API class', function () {
 	/**
 	 * TEST #5 to test the account's container blobs to another
 	 */
-	describe.skip('Test to copy one account to another', function () {
+	describe ('Test to copy one account to another', function () {
 		this.timeout(timeout);
 
 		it('should resolve the copy process', done => {
@@ -86,7 +93,7 @@ describe('Testing Azure API class', function () {
 			resolvePromise.then(success => {
 				expect(success).to.equal('success');
 				done();
-			}).catch(error => done());
+			}).catch(error => console.log (error));
 		});
 	});
 
@@ -153,7 +160,7 @@ describe('Testing Azure API class', function () {
 	 * UNIT TEST
 	 * TEST #9 to copy all the tables into another.
 	 */
-	describe.skip('Test to copy whole tables into another account', function () {
+	describe('Test to copy whole tables into another account', function () {
 		this.timeout(timeout);
 
 		it('should resolve the copy process of account tables into another account', done => {
