@@ -43,7 +43,7 @@ azure-storage-backup is an npm module to generate the azure storage backups. Pri
 4. Calling the copy API.
 ```
 var AzureConfig = require('../config/AzureConfig.js');
-var AzureStorage = require ('azure-storage-backup)(config);
+var AzureStorage = require ('azure-storage-backup)(AzureConfig);
 
 // ... Code goes here
 

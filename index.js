@@ -22,8 +22,7 @@ module.exports =  config => {
 		 * @returns {Promise} resolving and rejecting the request.
 		 */
 		triggerContainerBackup: (sourceContainer, targetContainer) => Azure.copyContainerBlobs(sourceContainer, targetContainer),
-
-
+		
 		/**
 		 * @desc trigger to backup all tables inside the storage account. This will trigger to
 		 * backup all the tables from source account to target account
