@@ -1,5 +1,8 @@
 # Microsoft Azure Storage Account Backup
-<img src='http://www.newhorizons.com/portals/278/Images/MSAzure.png' width="200"/>
+![Azure](http://www.newhorizons.com/portals/278/Images/MSAzure.png "Logo Title Text 1")
+
+Reference-style: 
+<!-- <img src='http://www.newhorizons.com/portals/278/Images/MSAzure.png' width="200"/> -->
 azure-storage-backup is an npm module to generate the azure storage backups. Primarily this was designed to do BLOB storage backups, but it now also supports Table storage backups. In order to use this plugin, you need to have an Azure account. You need to create a storage account and need to have the access keys for the same. 
 
 > 1. Require node >= 4.4.5
