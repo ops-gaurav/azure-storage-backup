@@ -1,4 +1,5 @@
 # Microsoft Azure Storage Account Backup
+![travis](https://api.travis-ci.org/sharma02gaurav/azure-storage-backup.svg?branch=master)
 [![npm](https://img.shields.io/npm/dt/azure-storage-backup.svg)](https://www.npmjs.com/package/azure-storage-backup) <br/>
 [![NPM](https://nodei.co/npm/azure-storage-backup.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/azure-storage-backup/)<br/>
 ![Azure](http://www.newhorizons.com/portals/278/Images/MSAzure.png)
